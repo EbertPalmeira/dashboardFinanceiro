@@ -7,6 +7,7 @@ body, input, textarea, button {
     font-weight:400;
     box-sizing: border-box;
     margin: 0;
+    background-color: #E6E6FA;
 }
 
 

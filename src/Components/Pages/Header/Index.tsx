@@ -17,11 +17,13 @@ const Home = () => {
         paddingTop:'50px',
         display:'flex',
         justifyContent:'space-around',
-
+        background:'#4169E1',
+        height:'150px',
+        position:'relative'
 
 
     }}>
-        <Box>DX Money</Box>
+        <Box sx={{color:"#fff"}}>DX Money</Box>
 
         <Box>
           <Button type='button' onClick={openModal}

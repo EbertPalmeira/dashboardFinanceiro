@@ -1,134 +1,136 @@
-
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-import Box from '@mui/material/Box'
-import Button from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { FaArrowAltCircleUp, FaArrowAltCircleDown } from 'react-icons/fa';
+import { useFinance } from '../Context';
 
-import { FaArrowAltCircleUp,FaArrowAltCircleDown } from "react-icons/fa";
 
-
-
-type onRequestProps={
-    isOpen:boolean,
-    onRequestClose:()=>void;
-
+interface OnRequestProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
 }
 
-const NewModal: React.FC<onRequestProps> = ({ isOpen, onRequestClose }) => {
+const NewModal: React.FC<OnRequestProps> = ({ isOpen, onRequestClose }) => {
+  const { addTransaction } = useFinance();
+  const [descricao, setDescricao] = useState('');
+  const [valor, setValor] = useState<string | number>('');
+
+  const [tipo, setTipo] = useState<'entrada' | 'saida' | null>(null);
+
+  const handleAddTransaction = () => {
+    if(tipo === null || descricao === '' || valor === 0   ){
+      alert('Informe todos os dados')
+      return
+    }
+    if (tipo) {
+      addTransaction({ descricao, valor:Number(valor), tipo });
+      onRequestClose(); // Close the modal after adding
+    }
+    setDescricao('');
+    setValor(0);
+    setTipo(null);
+
+  };
+
   return (
     <Modal
-    isOpen={isOpen}
-    onRequestClose={onRequestClose}
-     overlayClassName='react-modal-overlay'
-    className="react-modal-content"
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      overlayClassName='react-modal-overlay'
+      className='react-modal-content'
     >
-    <Typography sx={{
-        marginBottom:'10px'
-    }}>
-        Cadastrar Transação
-    </Typography>
-
-    <Box sx={{marginBottom:'10px'}}>
-    
-        <Box sx={{display:"grid",gap:'20px'}}>
-            <input type="text"
-            style={{
-                width:'405px',
-                height:'40px',
-                boxSizing:"border-box"
-            }}
-            />
-            <input 
-            type="number"
-            style={{
-                width:'405px',
-                height:'40px',
-                boxSizing:"border-box"
-            }}
-            />
-        </Box>
-      
-    {/* buttons */}
-      <Box sx={{
-        display:'flex',
-        justifyContent:'center',
-        gap:'20px',
-        marginTop:'30px',
-
-        
-        }}>
-        <Button sx={{
-            display:'flex',
-            borderRadius:'0',
-            gap:'20px',
-            alignItems:'center',
-            border:'1px solid gray',
-            padding:'15px'
-            
-            }}>
-            <Typography>
-            <FaArrowAltCircleUp color='green' size={15}/>
-            </Typography>
-
-            <Typography sx={{fontSize:"18px",}}>
-                Entrada
-            </Typography>
-        </Button>
-
-        <Button sx={{
-            display:'flex',
-            gap:'20px',
-            alignItems:'center',
-            border:'1px solid gray',
-            padding:'15px',
-            borderRadius:'0',
-            
-            }}>
-            <Typography>
-            <FaArrowAltCircleDown color='red' size={15}/>
-            </Typography>
-
-            <Typography sx={{fontSize:"18px"}}>
-                Saida
-            </Typography>
-        </Button>
-      </Box>
-
-      <Box sx={{marginTop:"20px"}}>
-        <input type="text" placeholder='Categoria'
-            style={{
-                width:'405px',
-                height:'40px',
-                boxSizing:"border-box",
-                padding:"10px"
-            }}
-            />
+      <Typography sx={{ fontWeight:'bold', marginBottom: '10px',textAlign:'center' }}>Cadastrar Transação</Typography>
+      <Box sx={{ marginBottom: '10px' }}>
+        <Box sx={{ display: 'grid', gap: '20px' }}>
+          <input
+            type='text'
+            placeholder='Informe a descricão'
+            style={{ width: '405px', height: '40px', boxSizing: 'border-box' }}
+            value={descricao}
+            required
+            onChange={(e) => setDescricao(e.target.value)}
+          />
+          <input
+            type='number'
+            placeholder='Informe o valor'
+            style={{color:'#000', width: '405px', height: '40px', boxSizing: 'border-box' }}
+            value={valor}
+            required
+            onChange={(e) => setValor(Number(e.target.value))}
+          />
         </Box>
 
-        <Box sx={{
-            display:'grid',
-             justifyContent:'center',
-             marginTop:'20px',
-             border:'1px solid gray'
+        {/* Buttons */}
+        <Box sx={{ 
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '20px',
+            marginTop: '40px',
              
              }}>
-            <Button sx={{
-                fontSize:'18px',
-                
-            }}>
-                Cadastrar
-            </Button>
+          <Button
+            sx={{ display: 'flex',
+               borderRadius: '0',
+                gap: '20px',
+                height:'50px',
+                width:'150px',
+                alignItems: 'center',
+                border:tipo === 'entrada'? '2px solid green':'2px solid gray',
+                color:tipo === 'entrada'? ' green':' gray'
+                  
+                  }}
+            onClick={() => setTipo('entrada')}
+          >
+            <Typography>
+              <FaArrowAltCircleUp color='green' size={15} />
+            </Typography>
+            <Typography sx={{ fontSize: '18px' }}>Entrada</Typography>
+          </Button>
+
+          <Button
+            sx={{ 
+              display: 'flex',
+               gap: '20px',
+                alignItems: 'center',
+                height:'50px',
+                width:'150px',
+                borderRadius: '0',
+                border:tipo === 'saida'? '2px solid red':'2px solid gray',
+                color:tipo === 'saida'? ' red':' gray'
+              
+              }}
+            onClick={() => setTipo('saida')}
+          >
+            <Typography>
+              <FaArrowAltCircleDown color='red' size={15} />
+            </Typography>
+            <Typography sx={{ fontSize: '18px' }}>Saída</Typography>
+          </Button>
         </Box>
+              <Box sx={{
+                display:"flex",
+              justifyContent:"center",
+              textAlign:'center'
+              }}>
+                  <Button sx={{           
+                    fontSize: '18px',
+                    borderRadius: '0',
+                    marginTop:'50px',
+                    border:'2px solid green',
+                    background:'green',
+                    color :"#FFF"
+                }} 
+                onClick={handleAddTransaction}>
+                Cadastrar
+              </Button>
+              </Box>
+          
         
-
-
-
-    </Box>
-
+      </Box>
     </Modal>
+  );
+};
 
-    
-  )
-}
-
-export default NewModal
+export default NewModal;
