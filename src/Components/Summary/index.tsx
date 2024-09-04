@@ -113,12 +113,12 @@ const Summary = () => {
   
            
             {transactions.map((transaction, index) => (
-                <Box  key={index}>
+                <React.Fragment key={index}>
                   <Typography sx={{marginTop:"10px",}}>{transaction.descricao}</Typography>
                   <Typography sx={{ marginTop:"10px",color: transaction.tipo === 'entrada' ? 'green' : 'red' }}>R$ {transaction.valor.toFixed(2)}</Typography>
                   <Typography sx={{ marginTop:"10px",color: transaction.tipo === 'entrada' ? 'green' : 'red'}}>{transaction.tipo === 'entrada' ? 'Entrada' : 'Saída'}</Typography>
             
-              </Box>
+              </React.Fragment>
               
             ))}
             </Box>

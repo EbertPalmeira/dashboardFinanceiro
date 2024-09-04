@@ -17,7 +17,7 @@ const Home = () => {
         paddingTop:'50px',
         display:'flex',
         justifyContent:'space-around',
-        background:'#4169E1',
+        background:'#6A5ACD',
         height:'150px',
         position:'relative'
 
@@ -34,6 +34,7 @@ const Home = () => {
           }}>
             Nova transação
           </Button>
+          
           <NewModal isOpen={modalIsOpen} onRequestClose={closeModal} />
 
         </Box>

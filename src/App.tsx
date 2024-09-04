@@ -1,9 +1,10 @@
 
 import './App.css'
-import { FinanceProvider } from './Components/Pages/Context'
-import Home from './Components/Pages/Header/Index'
-import { GlobalStyle } from './Components/Pages/Styles/styles'
-import Summary from './Components/Pages/Summary'
+import { FinanceProvider } from './Components/Context'
+import Grafico from './Components/Grafico'
+import Home from './Components/Header/Index'
+import { GlobalStyle } from './Components/Styles/styles'
+import Summary from './Components/Summary'
 function App() {
 
 
@@ -12,6 +13,7 @@ function App() {
       <GlobalStyle />
         <Home/>
         <Summary/>
+        <Grafico/>
     </FinanceProvider>
   )
 }

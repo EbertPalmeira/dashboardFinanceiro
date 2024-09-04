@@ -16,22 +16,20 @@ const NewModal: React.FC<OnRequestProps> = ({ isOpen, onRequestClose }) => {
   const { addTransaction } = useFinance();
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState<string | number>('');
-
   const [tipo, setTipo] = useState<'entrada' | 'saida' | null>(null);
 
   const handleAddTransaction = () => {
-    if(tipo === null || descricao === '' || valor === 0   ){
-      alert('Informe todos os dados')
-      return
+    if(tipo === null || descricao === '' || valor === '' || Number(valor) === 0 ){
+      alert('Informe todos os dados');
+      return;
     }
     if (tipo) {
-      addTransaction({ descricao, valor:Number(valor), tipo });
-      onRequestClose(); // Close the modal after adding
+      addTransaction({ descricao, valor: Number(valor), tipo });
+      onRequestClose(); 
     }
     setDescricao('');
-    setValor(0);
+    setValor(''); 
     setTipo(null);
-
   };
 
   return (
@@ -46,7 +44,7 @@ const NewModal: React.FC<OnRequestProps> = ({ isOpen, onRequestClose }) => {
         <Box sx={{ display: 'grid', gap: '20px' }}>
           <input
             type='text'
-            placeholder='Informe a descricão'
+            placeholder='Informe a descrição'
             style={{ width: '405px', height: '40px', boxSizing: 'border-box' }}
             value={descricao}
             required
@@ -55,14 +53,14 @@ const NewModal: React.FC<OnRequestProps> = ({ isOpen, onRequestClose }) => {
           <input
             type='number'
             placeholder='Informe o valor'
-            style={{color:'#000', width: '405px', height: '40px', boxSizing: 'border-box' }}
+            style={{ color:'#000', width: '405px', height: '40px', boxSizing: 'border-box' }}
             value={valor}
             required
-            onChange={(e) => setValor(Number(e.target.value))}
+            onChange={(e) => setValor(e.target.value)}
           />
         </Box>
 
-        {/* Buttons */}
+        {/* Botões */}
         <Box sx={{ 
             display: 'flex',
             justifyContent: 'center',
@@ -77,14 +75,15 @@ const NewModal: React.FC<OnRequestProps> = ({ isOpen, onRequestClose }) => {
                 height:'50px',
                 width:'150px',
                 alignItems: 'center',
-                border:tipo === 'entrada'? '2px solid green':'2px solid gray',
-                color:tipo === 'entrada'? ' green':' gray'
+                background:tipo === 'entrada'? 'green': '#fff',
+                border:tipo === 'entrada'? '2px solid green':'2px solid #DCDCDC',
+                color:tipo === 'entrada'? '#DCDCDC':' green'
                   
                   }}
             onClick={() => setTipo('entrada')}
           >
             <Typography>
-              <FaArrowAltCircleUp color='green' size={15} />
+              <FaArrowAltCircleUp color={tipo==='entrada'?'#fff':'green'} size={15} />
             </Typography>
             <Typography sx={{ fontSize: '18px' }}>Entrada</Typography>
           </Button>
@@ -97,14 +96,15 @@ const NewModal: React.FC<OnRequestProps> = ({ isOpen, onRequestClose }) => {
                 height:'50px',
                 width:'150px',
                 borderRadius: '0',
-                border:tipo === 'saida'? '2px solid red':'2px solid gray',
-                color:tipo === 'saida'? ' red':' gray'
+                background:tipo === 'saida'? 'red': '#fff',
+                border:tipo === 'saida'? '2px solid red':'2px solid #DCDCDC',
+                color:tipo === 'saida'? '#DCDCDC':' red'
               
               }}
             onClick={() => setTipo('saida')}
           >
             <Typography>
-              <FaArrowAltCircleDown color='red' size={15} />
+              <FaArrowAltCircleDown color={tipo==='saida'?'#fff':'red'} size={15} />
             </Typography>
             <Typography sx={{ fontSize: '18px' }}>Saída</Typography>
           </Button>
